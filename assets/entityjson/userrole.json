@@ -1,0 +1,20 @@
+[
+  {
+    ".entity": "userRole",
+    ".action": "create",
+    ".data": {
+      "id": 0,
+      "name": "tech 1",
+      "description": "description tech 1"
+    }
+  },
+  {
+    ".entity": "userRole",
+    ".action": "create",
+    ".data": {
+      "id": 0,
+      "name": "tech 2",
+      "description": "description tech 2"
+    }
+  }
+]

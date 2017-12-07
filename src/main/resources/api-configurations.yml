@@ -1,0 +1,39 @@
+headers:
+  - key: Content-type
+    value: application/json
+  - key: Accept
+    value: application/json
+  - key: X-Scene-Service-Token-Header
+    value: BSS:SERVICE:TOKEN:DEV:001
+api-rests:
+  - api: partyManagement
+    base-url: localhost
+    port: 9010
+    entities:
+      - entity: user
+        actions:
+          create: /userManagement/user
+          update: /userManagement/user/{id}
+          get: /userManagement/user/{id}
+      - entity: userRole
+        actions:
+          create: /userManagement/userrole
+          update: /userManagement/userrole/{id}
+          delete: /userManagement/userrole/{id}
+          get: /userManagement/userrole/{id}
+  - api: productOrder
+    base-url: localhost
+    port: 9008
+    entities:
+      - entity: ProductOrder
+        actions:
+          create: /orderManagement/productOrder
+          update: /orderManagement/productOrder/{id}
+          delete: /orderManagement/productOrder/{id}
+          get: /orderManagement/productOrder/{id}
+      - entity: ProductSpecification
+        actions:
+          create: /productCatalogManagement/productSpecification
+          update: /productCatalogManagement/productSpecification/{id}
+          delete: /productCatalogManagement/productSpecification/{id}
+          get: /productCatalogManagement/productSpecification/{id}

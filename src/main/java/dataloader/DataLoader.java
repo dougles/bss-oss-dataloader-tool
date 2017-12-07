@@ -1,0 +1,68 @@
+package dataloader;
+
+import avro.PaymentApplication.PaymentApplication;
+import avro.ProductOrderNotification.ProductOrderNotification;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
+import com.google.inject.Inject;
+import configuration.Configuration;
+import dataloader.interpreter.ConstansPaths;
+import dataloader.interpreter.EntityInterpreter;
+import dataloader.interpreter.JsonReader;
+import dataloader.interpreter.KafkaInterpreter;
+import exception.DataLoaderException;
+import log.DataLogger;
+
+import java.io.IOException;
+import java.util.List;
+
+public class DataLoader {
+
+    private final EntityInterpreter interpreter;
+    private final KafkaInterpreter<PaymentApplication> paymentKafkaInterpreter;
+    private final KafkaInterpreter<ProductOrderNotification> productOrderKafkaInterpreter;
+
+    @Inject
+    public DataLoader(EntityInterpreter interpreter, KafkaInterpreter<PaymentApplication> paymentKafkaInterpreter, KafkaInterpreter<ProductOrderNotification> productOrderKafkaInterpreter) {
+        this.interpreter = interpreter;
+        this.paymentKafkaInterpreter = paymentKafkaInterpreter;
+        this.productOrderKafkaInterpreter = productOrderKafkaInterpreter;
+    }
+
+    public void execute() {
+        DataLogger.info(this.getClass(), "Starting Process");
+        this.kafkaProcess();
+        this.entityProcess();
+        DataLogger.info(this.getClass(), "Ended Process");
+    }
+
+    private void entityProcess() {
+        final List<String> jsonResources = Configuration.current().jsonResources;
+        for (String file : jsonResources) {
+            try {
+                final ArrayNode jsonFromFile = JsonReader.getFromFile(ConstansPaths.PATH_TO_ENTITIES + file);
+                interpreter.process(jsonFromFile);
+            } catch (DataLoaderException | IOException e) {
+                e.printStackTrace();
+                DataLogger.warn(DataLoader.class, e.getMessage());
+            }
+        }
+    }
+
+    private void kafkaProcess() {
+        try {
+            final String organizationFile = (String) Configuration.current().kafkaResources.get("organization");
+            final ArrayNode organizationsJson = JsonReader.getFromFile(ConstansPaths.PATH_TO_KAFKA + organizationFile);
+            DataLogger.info(this.getClass(), "Starting message to Kafka on Organizations");
+            paymentKafkaInterpreter.process(organizationsJson);
+            final String productOrderFile = (String) Configuration.current().kafkaResources.get("product-order");
+            final ArrayNode productOrdersJson = JsonReader.getFromFile(ConstansPaths.PATH_TO_KAFKA + productOrderFile);
+            DataLogger.info(this.getClass(), "Starting message to Kafka on ProductOrders");
+            productOrderKafkaInterpreter.process(productOrdersJson);
+            DataLogger.info(this.getClass(), "Ending Kafka messages");
+        } catch (IOException e) {
+            e.printStackTrace();
+            DataLogger.warn(DataLoader.class, e.getMessage());
+        }
+    }
+}

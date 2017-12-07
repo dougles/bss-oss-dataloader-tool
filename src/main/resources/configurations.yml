@@ -1,0 +1,10 @@
+modules:
+  - module.LoaderModule
+  - module.KafkaProducerModule
+api-resources:
+#  - usera.json
+  - userrole.json
+kafka-resources:
+  organization: organizations.json
+  product-order: productOrders.json
+kafka-producer: localhost:9092
