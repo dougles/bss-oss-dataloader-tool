@@ -1,0 +1,41 @@
+[
+  {
+    ".entity": "user",
+    ".action": "create",
+    ".data": {
+      "id": 0,
+      "userName": "Max User {i}",
+      "password": "123456789",
+      "name": "Max Name{i}",
+      "lastName": "Smith{i}",
+      "email": "max{i}2@gmail.com",
+      "@userRole": {
+        ".from": "userRole.getById('1')",
+        ".map": {
+          "id": "id",
+          "name": "name",
+          "description": "description"
+        }
+      }
+    }
+  },
+  {
+    ".entity": "user",
+    ".action": "update",
+    ".data": {
+      "id": 1,
+      "userName": "Max User {i}",
+      "password": "123456789",
+      "name": "Max Name{i}",
+      "lastName": "Smith{i}",
+      "email": "max{i}2@gmail.com"
+    }
+  },
+  {
+    ".entity": "user",
+    ".action": "delete",
+    ".data": {
+      "id": 1
+    }
+  }
+]

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.inject.Inject;
 import kafka.KafkaProducer;
-import log.DataLogger;
+
 import org.apache.avro.specific.SpecificRecordBase;
 
 public class KafkaInterpreter<T extends SpecificRecordBase> implements JsonInterpreter {
@@ -22,5 +22,6 @@ public class KafkaInterpreter<T extends SpecificRecordBase> implements JsonInter
             JsonNode objectNode = jsonNodes.get(i);
             kafkaProducer.sedMessage(objectNode);
         }
+        kafkaProducer.closeProducer();
     }
 }

@@ -39,6 +39,6 @@ public class KafkaProducerModule extends AbstractModule {
     @Singleton
     public KafkaProducer<ProductOrderNotification> getKafkaProductOrderProducer() {
         final Producer<String, byte[]> producer = KafkaFactory.createInstance();
-        return new KafkaProducer<>(producer, ProductOrderNotification.class, ConstantsModel.PRODUCT_ORDER_UPDATED_TOPIC);
+        return new KafkaProducer<>(producer, ProductOrderNotification.class, ConstantsModel.PRODUCT_ORDER_CREATED_TOPIC);
     }
 }

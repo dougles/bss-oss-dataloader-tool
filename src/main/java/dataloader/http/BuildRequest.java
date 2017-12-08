@@ -2,7 +2,6 @@ package dataloader.http;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import log.DataLogger;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;

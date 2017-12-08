@@ -27,4 +27,8 @@ public class KafkaProducer<T extends SpecificRecordBase> {
         final byte[] bytes = ConvertUtils.jsonMessageToBytes(jsonMessage, this.clazz);
         producer.send(new ProducerRecord(this.topic, bytes));
     }
+
+    public void closeProducer() {
+        producer.close();
+    }
 }

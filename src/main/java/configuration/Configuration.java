@@ -4,6 +4,7 @@ import log.DataLogger;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class Configuration {
             }
 
             if (conf.containsKey("api-resources")) {
-                configuration.jsonResources = (List<String>) conf.get("api-resources");
+                configuration.jsonResources = conf.get("api-resources") != null ? (List<String>) conf.get("api-resources") : new ArrayList<>();
             } else {
                 DataLogger.error(Configuration.class, "APIs configuration not found");
             }

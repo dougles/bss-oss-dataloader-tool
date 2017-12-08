@@ -4,7 +4,7 @@ import dataloader.urlschema.params.ActionRest;
 import dataloader.urlschema.params.Entity;
 
 import log.DataLogger;
-import util.MapperEnum;
+import util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class HttpVarsBuilder {
                 for (ActionRest action : ActionRest.values()) {
                     if (actionsMap.containsKey(action.getValue())) {
                         String rawAction = (String) actionsMap.get(action.getValue());
-                        String urlFormatted = mainUrl + urlForParameters(rawAction);
+                        String urlFormatted = mainUrl + StringUtils.formatStringBrackets(rawAction, "%s");
                         try {
                             Field declaredField = entityAction.getClass().getDeclaredField(action.getValue());
                             declaredField.set(entityAction, urlFormatted);
@@ -44,23 +44,12 @@ public class HttpVarsBuilder {
                     }
                 }
 
-                Entity entity = Entity.valueOf(MapperEnum.toUnderscore(rawEntity));
+                Entity entity = Entity.valueOf(StringUtils.toUnderscore(rawEntity));
                 entitiesMap.put(entity, entityAction);
             }
         }
 
         return new EntityHttpVars(entitiesMap, headers);
-    }
-
-    private static String urlForParameters(String rawUrl) {
-        Matcher matcher = Pattern.compile("\\{.+?\\}").matcher(rawUrl);
-        StringBuffer sbUrl = new StringBuffer();
-        while (matcher.find()) {
-            matcher.appendReplacement(sbUrl, "%s");
-        }
-        matcher.appendTail(sbUrl);
-
-        return sbUrl.toString();
     }
 
     public static Map<String, String> getHeaders(List<Map> rawHeaders) {

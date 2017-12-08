@@ -16,7 +16,7 @@ import exception.DataLoaderException;
 import log.DataLogger;
 import org.apache.http.HttpStatus;
 import util.JsonMapper;
-import util.MapperEnum;
+import util.StringUtils;
 
 import java.io.IOException;
 import java.util.*;
@@ -42,8 +42,8 @@ public class EntityInterpreter implements JsonInterpreter {
         for (int i = 0; i < n; i++) {
             JsonNode objectNode = jsonNodes.get(i);
             if (objectNode.has(InterpreterKeys.ENTITY) && objectNode.has(InterpreterKeys.DATA) && objectNode.has(InterpreterKeys.ACTION)) {
-                String entityFormatted = MapperEnum.toUnderscore(objectNode.get(InterpreterKeys.ENTITY).asText());
-                String actionFormatted = MapperEnum.toUnderscore(objectNode.get(InterpreterKeys.ACTION).asText());
+                String entityFormatted = StringUtils.toUnderscore(objectNode.get(InterpreterKeys.ENTITY).asText());
+                String actionFormatted = StringUtils.toUnderscore(objectNode.get(InterpreterKeys.ACTION).asText());
                 String cacheId = null;
                 if (objectNode.has(InterpreterKeys.CACHE_ID)) {
                     cacheId = objectNode.get(InterpreterKeys.CACHE_ID).asText();
@@ -81,13 +81,14 @@ public class EntityInterpreter implements JsonInterpreter {
                 jsonResponse.thenAccept(r -> {
                     if (r.status == HttpStatus.SC_CREATED) {
                         idOptional.ifPresent(s -> this.cacheEntity.setEntity(entity, s, r.jsonBody));
+                        DataLogger.info("Entity created:" + JsonMapper.getStringValue(data));
                     } else {
-                        DataLogger.error(this.getClass(), "Unable to create entity:" + entity.entity());
+                        DataLogger.error(this.getClass(), "It was not possible to create entity:" + JsonMapper.getStringValue(data));
                     }
                 });
             } catch (IOException e) {
                 e.getStackTrace();
-                DataLogger.error(this.getClass(), "Was not possible to create Entity" + entity.entity());
+                DataLogger.error(this.getClass(), "Error creating Entity:" + JsonMapper.getStringValue(jsonData));
             }
         }
     }
@@ -106,12 +107,12 @@ public class EntityInterpreter implements JsonInterpreter {
                 if (r.status == HttpStatus.SC_CREATED) {
                     idOptional.ifPresent(s -> this.cacheEntity.setEntity(entity, s, r.jsonBody));
                 } else {
-                    DataLogger.error(this.getClass(), "Unable to update entity:" + entity.entity());
+                    DataLogger.error(this.getClass(), "It was not possible to create entity:" + JsonMapper.getStringValue(jsonData));
                 }
             });
         } catch (IOException e) {
             e.getStackTrace();
-            DataLogger.error(this.getClass(), "Was not possible to update Entity" + entity.entity());
+            DataLogger.error(this.getClass(), "Error updating Entity" + JsonMapper.getStringValue(jsonData));
         }
     }
 
@@ -140,16 +141,9 @@ public class EntityInterpreter implements JsonInterpreter {
                     builtChildren.put(jsonNodeEntry.getKey(), this.makeSubEntityJson(jsonNodeEntry.getValue()));
                 }
             }
-
             if (jsonNodeEntry.getValue().getNodeType() == JsonNodeType.STRING) {
-                String s = jsonNodeEntry.getValue().asText();
-                Matcher matcher = Pattern.compile("\\{.+?\\}").matcher(s);
-                StringBuffer sbUrl = new StringBuffer();
-                while (matcher.find()) {
-                    matcher.appendReplacement(sbUrl, String.valueOf(System.currentTimeMillis()));
-                }
-                matcher.appendTail(sbUrl);
-                TextNode t = new TextNode(sbUrl.toString());
+                String propertyModified = StringUtils.formatStringBrackets(jsonNodeEntry.getValue().asText(), String.valueOf(System.currentTimeMillis()));
+                TextNode t = new TextNode(propertyModified);
                 jsonNodeEntry.setValue(t);
             }
         }
@@ -183,7 +177,7 @@ public class EntityInterpreter implements JsonInterpreter {
             String nestedAction = jsonNode.get(InterpreterKeys.FROM).textValue();
             String[] splitted = nestedAction.split("\\.");
             String nameAction = splitted[1];
-            Entity entity = Entity.valueOf(MapperEnum.toUnderscore(splitted[0]));
+            Entity entity = Entity.valueOf(StringUtils.toUnderscore(splitted[0]));
             Matcher matcher = Pattern.compile("'(.*?)'").matcher(nameAction);
             String field = "";
             if (matcher.find()) {
@@ -198,7 +192,7 @@ public class EntityInterpreter implements JsonInterpreter {
             //TODO from file
         }
         if (result == null) {
-            throw new IOException("Sub Entity does not exists");
+            throw new IOException("Sub Entity does not exists: " + JsonMapper.getStringValue(jsonNode));
         }
 
         return result;

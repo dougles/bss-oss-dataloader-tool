@@ -31,8 +31,8 @@ public class DataLoader {
 
     public void execute() {
         DataLogger.info(this.getClass(), "Starting Process");
-        this.kafkaProcess();
         this.entityProcess();
+        this.kafkaProcess();
         DataLogger.info(this.getClass(), "Ended Process");
     }
 
@@ -50,15 +50,20 @@ public class DataLoader {
     }
 
     private void kafkaProcess() {
+        DataLogger.info(this.getClass(), "Starting Kafka messages");
         try {
-            final String organizationFile = (String) Configuration.current().kafkaResources.get("organization");
-            final ArrayNode organizationsJson = JsonReader.getFromFile(ConstansPaths.PATH_TO_KAFKA + organizationFile);
-            DataLogger.info(this.getClass(), "Starting message to Kafka on Organizations");
-            paymentKafkaInterpreter.process(organizationsJson);
-            final String productOrderFile = (String) Configuration.current().kafkaResources.get("product-order");
-            final ArrayNode productOrdersJson = JsonReader.getFromFile(ConstansPaths.PATH_TO_KAFKA + productOrderFile);
-            DataLogger.info(this.getClass(), "Starting message to Kafka on ProductOrders");
-            productOrderKafkaInterpreter.process(productOrdersJson);
+            final String organizationFile = (String) Configuration.current().kafkaResources.get(ConstansPaths.KafkaKeyFiles.ORGANIZATION);
+            if (organizationFile != null) {
+                final ArrayNode organizationsJson = JsonReader.getFromFile(ConstansPaths.PATH_TO_KAFKA + organizationFile);
+                DataLogger.info(this.getClass(), "Starting messages to Kafka for Organizations");
+                paymentKafkaInterpreter.process(organizationsJson);
+            }
+            final String productOrderFile = (String) Configuration.current().kafkaResources.get(ConstansPaths.KafkaKeyFiles.PRODUCT_ORDER);
+            if (productOrderFile != null) {
+                final ArrayNode productOrdersJson = JsonReader.getFromFile(ConstansPaths.PATH_TO_KAFKA + productOrderFile);
+                DataLogger.info(this.getClass(), "Starting messages to Kafka for ProductOrders");
+                productOrderKafkaInterpreter.process(productOrdersJson);
+            }
             DataLogger.info(this.getClass(), "Ending Kafka messages");
         } catch (IOException e) {
             e.printStackTrace();

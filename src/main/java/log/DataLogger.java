@@ -16,6 +16,10 @@ public class DataLogger {
         logger.info(constructMessage(where, what));
     }
 
+    public static void info(String what) {
+        logger.info(what);
+    }
+
     public static void error(Class<?> where, String what) {
         logger.error(constructMessage(where, what));
     }
