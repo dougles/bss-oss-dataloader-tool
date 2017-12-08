@@ -1,0 +1,52 @@
+[
+  {
+    ".entity": "userRole",
+    ".cacheId": "ur1",
+    ".action": "create",
+    ".data": {
+      "id": 0,
+      "name": "New Role",
+      "description": "New Role description"
+    }
+  },
+  {
+    ".entity": "user",
+    ".action": "create",
+    ".data": {
+      "id": 0,
+      "userName": "NewUserName",
+      "password": "control123!",
+      "name": "NewUserGuestName",
+      "lastName": "NewUserGuestLastName",
+      "email": "user4@gmail.com",
+      "@userRole": {
+        ".from": "userRole.getFromCache('ur1')",
+        ".map": {
+          "id": "id",
+          "name": "name",
+          "description": "description"
+        }
+      }
+    }
+  },
+  {
+    ".entity": "user",
+    ".action": "create",
+    ".data": {
+      "id": 0,
+      "userName": "NewUserName{t}",
+      "password": "control123!",
+      "name": "NewUserGuestName{t}",
+      "lastName": "NewUserGuestLastName{t}",
+      "email": "user{t}@gmail.com",
+      "@userRole": {
+        ".from": "userRole.getById('1')",
+        ".map": {
+          "id": "id",
+          "name": "name",
+          "description": "description"
+        }
+      }
+    }
+  }
+]
