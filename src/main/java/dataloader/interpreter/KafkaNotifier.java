@@ -7,11 +7,11 @@ import kafka.KafkaProducer;
 
 import org.apache.avro.specific.SpecificRecordBase;
 
-public class KafkaInterpreter<T extends SpecificRecordBase> implements JsonInterpreter {
+public class KafkaNotifier<T extends SpecificRecordBase> implements JsonInterpreter {
     private KafkaProducer<T> kafkaProducer;
 
     @Inject
-    public KafkaInterpreter(KafkaProducer<T> kafkaProducer) {
+    public KafkaNotifier(KafkaProducer<T> kafkaProducer) {
         this.kafkaProducer = kafkaProducer;
     }
 

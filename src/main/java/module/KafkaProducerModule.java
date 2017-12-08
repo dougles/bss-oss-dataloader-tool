@@ -5,7 +5,7 @@ import avro.ProductOrderNotification.ProductOrderNotification;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import dataloader.interpreter.KafkaInterpreter;
+import dataloader.interpreter.KafkaNotifier;
 import kafka.KafkaFactory;
 import kafka.KafkaProducer;
 import models.ConstantsModel;
@@ -18,14 +18,14 @@ public class KafkaProducerModule extends AbstractModule {
 
     @Provides
     @Singleton
-    public KafkaInterpreter<PaymentApplication> getKafkaInterpreterPaymentApplication(KafkaProducer<PaymentApplication> kafkaProducer) {
-        return new KafkaInterpreter(kafkaProducer);
+    public KafkaNotifier<PaymentApplication> getKafkaInterpreterPaymentApplication(KafkaProducer<PaymentApplication> kafkaProducer) {
+        return new KafkaNotifier(kafkaProducer);
     }
 
     @Provides
     @Singleton
-    public KafkaInterpreter<ProductOrderNotification> getKafkaInterpreterProductOrder(KafkaProducer<ProductOrderNotification> kafkaProducer) {
-        return new KafkaInterpreter(kafkaProducer);
+    public KafkaNotifier<ProductOrderNotification> getKafkaInterpreterProductOrder(KafkaProducer<ProductOrderNotification> kafkaProducer) {
+        return new KafkaNotifier(kafkaProducer);
     }
 
     @Provides
