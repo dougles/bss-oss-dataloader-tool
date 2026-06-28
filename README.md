@@ -1,37 +1,55 @@
-## Welcome to GitHub Pages
+# Data Loader for APIs max2
 
-You can use the [editor on GitHub](https://github.com/dougles/bss-oss-dataloader-tool/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+A Java-based data loader application for managing and loading data through APIs.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Overview
 
-### Markdown
+This project provides a robust data loading solution designed to efficiently handle data transfer through API endpoints. Built primarily in Java with optimal performance and reliability in mind.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Technology Stack
 
-```markdown
-Syntax highlighted code block
+- **Java**: 99.6%
+- **Scala**: 0.4%
 
-# Header 1
-## Header 2
-### Header 3
+## Features
 
-- Bulleted
-- List
+- Data loading from various sources
+- API integration
+- Efficient data processing
+- Scalable architecture
 
-1. Numbered
-2. List
+## Getting Started
 
-**Bold** and _Italic_ and `Code` text
+### Prerequisites
 
-[Link](url) and ![Image](src)
+- Java 8 or higher
+- Maven (or Gradle, depending on your build configuration)
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/dougles/bss-oss-dataloader-tool.git
+cd bss-oss-dataloader-tool
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+2. Build the project:
+```bash
+mvn clean install
+```
 
-### Jekyll Themes
+## Usage
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/dougles/bss-oss-dataloader-tool/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+[Add usage instructions here based on your application's specific functionality]
 
-### Support or Contact
+## Contributing
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+[Specify your license here]
+
+## Support
+
+For issues, questions, or suggestions, please open an issue on the [GitHub Issues](https://github.com/dougles/bss-oss-dataloader-tool/issues) page.
