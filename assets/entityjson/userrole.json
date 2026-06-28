@@ -1,0 +1,11 @@
+[
+  {
+    ".entity": "userRole",
+    ".action": "create",
+    ".data": {
+      "id": 0,
+      "name": "Assistant",
+      "description": "Assistant"
+    }
+  }
+]

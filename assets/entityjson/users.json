@@ -1,0 +1,62 @@
+[
+  {
+    ".entity": "user",
+    ".action": "create",
+    ".data": {
+      "id": 0,
+      "userName": "operator",
+      "name": "operator",
+      "lastName": "user",
+      "email": "operator@max2.com",
+      "password": "Control123",
+      "@userRole": {
+        ".from": "userRole.getById('1')",
+        ".map": {
+          "id": "id",
+          "name": "name",
+          "description": "description"
+        }
+      }
+    }
+  },
+  {
+    ".entity": "user",
+    ".action": "create",
+    ".data": {
+      "id": 0,
+      "userName": "technician",
+      "name": "technician",
+      "lastName": "user",
+      "email": "technician@max2.com",
+      "password": "Control123",
+      "@userRole": {
+        ".from": "userRole.getById('2')",
+        ".map": {
+          "id": "id",
+          "name": "name",
+          "description": "description"
+        }
+      }
+    }
+  },
+  {
+    ".entity": "user",
+    ".action": "create",
+    ".data": {
+      "id": 0,
+      "userName": "administrator",
+      "name": "administrator",
+      "lastName": "user",
+      "email": "administrator@max2.com",
+      "password": "Control123",
+      "@userRole": {
+        ".from": "userRole.getById('3')",
+        ".map": {
+          "id": "id",
+          "name": "name",
+          "description": "description"
+        }
+      }
+    }
+  }
+]
